@@ -12,10 +12,10 @@ class Category extends Model
     use HasChildren, IsOrderable;
 
     protected $fillable = [
-            'name',
-            'slug',
-            'order'
-        ];
+        'name',
+        'slug',
+        'order'
+    ];
 
     public function children()
     {

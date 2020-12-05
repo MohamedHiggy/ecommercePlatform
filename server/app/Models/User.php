@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Address;
+use App\Models\PaymentMethod;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -16,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'gateway_customer_id'
     ];
 
     /**
@@ -28,12 +30,52 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->password = bcrypt($user->password);
+        });
+    }
+
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * [getJWTIdentifier description]
+     * @return [type] [description]
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getJWTIdentifier()
+    {
+        return $this->id;
+    }
+
+    /**
+     * [getJWTCustomClaims description]
+     * @return [type] [description]
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function cart()
+    {
+        return $this->belongsToMany(ProductVariation::class, 'cart_user')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function paymentMethods()
+    {
+        return $this->hasMany(PaymentMethod::class);
+    }
 }

@@ -1,22 +1,31 @@
 {
-  "name": "client",
+  "name": "cartclient",
   "version": "1.0.0",
+  "description": "Nuxt.js project",
+  "author": "Alex Garrett <alex@codecourse.com>",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.12.2",
-    "@nuxtjs/bulma": "^1.3.0",
-    "core-js": "^3.6.5",
-    "nuxt": "^2.14.5"
+    "@nuxtjs/auth": "^4.5.1",
+    "@nuxtjs/axios": "^5.3.1",
+    "bulma": "^0.7.1",
+    "nuxt": "^1.0.0",
+    "query-string": "^6.1.0"
   },
   "devDependencies": {
-    "node-sass": "^5.0.0",
-    "sass-loader": "^10.1.0"
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.0.3"
   }
 }

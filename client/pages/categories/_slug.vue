@@ -2,15 +2,7 @@
   <div class="section">
     <div class="container is-fluid">
       <div class="columns is-multiline">
-        <div v-if="products.length == 0">
-            <h1>No item yet</h1>
-        </div>
-        <div
-          v-else
-          class="column is-3"
-          v-for="product in products"
-          :key="product.slug"
-        >
+        <div class="column is-3" v-for="product in products" :key="product.slug">
           <Product :product="product" />
         </div>
       </div>
@@ -19,21 +11,25 @@
 </template>
 
 <script>
-import Product from "@/components/products/Product";
-export default {
-  components: {
-    Product
-  },
-  data() {
-    return {
-      products: []
-    };
-  },
-  async asyncData({ params, app }) {
-    let response = await app.$axios.$get(`products?category=${params.slug}`);
-    return {
-      products: response.data
-    };
+  import Product from '@/components/products/Product'
+
+  export default {
+    data () {
+      return {
+        products: []
+      }
+    },
+
+    components: {
+      Product
+    },
+
+    async asyncData ({ params, app }) {
+      let response = await app.$axios.$get(`products?category=${params.slug}`)
+
+      return {
+        products: response.data
+      }
+    }
   }
-};
 </script>

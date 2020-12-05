@@ -1,53 +1,80 @@
-export default {
-    // Global page headers (https://go.nuxtjs.dev/config-head)
-    head: {
-        title: 'client',
-        meta: [
-            { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: '' }
-        ],
-        link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-        ]
-    },
-
-    // Global CSS (https://go.nuxtjs.dev/config-css)
-    css: [
-        '~/assets/styles/app.scss'
+module.exports = {
+  /*
+  ** Headers of the page
+  */
+  head: {
+    title: 'cartclient',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
     ],
-
-    // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-    plugins: [],
-
-    // Auto import components (https://go.nuxtjs.dev/config-components)
-    components: true,
-
-    // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-    buildModules: [],
-
-    // Modules (https://go.nuxtjs.dev/config-modules)
-    modules: [
-        // https://go.nuxtjs.dev/bootstrap
-        '@nuxtjs/bulma',
-        // https://go.nuxtjs.dev/axios
-        '@nuxtjs/axios',
-        '@nuxtjs/auth',
+    script: [
+      { src: 'https://js.stripe.com/v3/' }
     ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ]
+  },
 
-    // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-    axios: {
-        baseURL: 'http://localhost/api'
-    },
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
 
-    // Build Configuration (https://go.nuxtjs.dev/config-build)
-    build: {
-        postcss: {
-            preset: {
-                features: {
-                    customProperties: false
-                }
-            }
-        },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/login',
+            method: 'post',
+            propertyName: 'meta.token'
+          },
+          user: {
+            url: '/auth/me',
+            method: 'get',
+            propertyName: 'data'
+          }
+        }
+      }
     }
+  },
+
+  axios: {
+    baseURL: 'http://cart.test:8000/api'
+  },
+
+  css: [
+    '~assets/styles/app.scss'
+  ],
+
+  /*
+  ** Customize the progress bar color
+  */
+  loading: { color: '#3B8070' },
+  /*
+  ** Build configuration
+  */
+  build: {
+    postcss: {
+      plugins: {
+        'postcss-custom-properties': false
+      }
+    },
+    /*
+    ** Run ESLint on save
+    */
+    extend (config, { isDev, isClient }) {
+      if (isDev && isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    }
+  }
 }
+

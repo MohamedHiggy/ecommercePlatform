@@ -19,7 +19,7 @@
           {{ product.description }}
         </p>
 
-        <span class="tag is-rounded is-medium">50$</span>
+        <span class="tag is-rounded is-medium">{{ product.price }}</span>
       </div>
     </div>
   </div>
